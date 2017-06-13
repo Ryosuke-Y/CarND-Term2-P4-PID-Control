@@ -1,6 +1,7 @@
 #include "PID.h"
 
 using namespace std;
+#include <iostream>
 
 /*
 * TODO: Complete the PID class.
@@ -23,8 +24,14 @@ void PID::UpdateError(double cte) {
   d_error = cte-p_error;
   p_error = cte;
   i_error += cte;
+
 }
 
 double PID::TotalError() {
-  return -1*(this->Kp*p_error+this->Ki*i_error + this->Kd * d_error);
+  steer = -1*(this->Kp*p_error+this->Ki*i_error + this->Kd * d_error);
+  if (steer > 1)
+		steer = 1;
+	else if (steer < -1)
+		steer = -1;
+  return steer;
 }

@@ -11,8 +11,13 @@ public:
   double d_error;
 
   /*
+  * Output
+  */
+  double steer;
+
+  /*
   * Coefficients
-  */ 
+  */
   double Kp;
   double Ki;
   double Kd;
