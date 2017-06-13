@@ -58,17 +58,9 @@ int main()
           * another PID controller to control the speed!
           */
 
+          // update controller with new cte and calculate steer value
           pid.UpdateError(cte);
-          steer_value = pid.getControlResponse();
-
-          // Speed regulation; minimum speed setting 10MPH so the car doesn't stall
-          double cte_int = abs(pid.getCTE_Int());
-          double pid_speed = target_speed - (1.4 * cte_int);
-          pid_speed = (pid_speed < 10.0) ? 10.0 : pid_speed;
-
-          pid_throttle.UpdateError(speed - pid_speed);
-          double throttle_value = pid_throttle.getControlResponse();
-          throttle_value = 0.5 + (0.5 * throttle_value);  // range 0.0 - 1.0
+          steer_value = pid.TotalError();
 
           // DEBUG
           std::cout << "CTE: " << cte << " Steering Value: " << steer_value << std::endl;
@@ -85,8 +77,8 @@ int main()
         std::string msg = "42[\"manual\",{}]";
         ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
       }
-    }
-  });
+   }
+});
 
   // We don't need this since we're not using HTTP but if it's removed the program
   // doesn't compile :-(
